@@ -1,0 +1,33 @@
+apiVersion: apps/v1 # for kubectl versions >= 1.9.0 use apps/v1
+kind: Deployment
+metadata:
+  name: hello-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-deployment
+  template:
+    metadata:
+      labels:
+        app: my-deployment
+    spec:
+      containers:
+      - name: my-pod
+        image: zxcvbnius/docker-demo:latest
+        ports:
+        - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-service
+spec:
+  type: NodePort
+  ports:
+  - port: 3080
+    nodePort: 30390
+    targetPort: 3000
+  selector:
+    app: my-deployment
