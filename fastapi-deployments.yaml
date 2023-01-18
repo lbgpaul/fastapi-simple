@@ -1,33 +1,33 @@
 apiVersion: apps/v1 # for kubectl versions >= 1.9.0 use apps/v1
 kind: Deployment
 metadata:
-  name: hello-deployment
+  name: api-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: my-deployment
+      app: my-api-deployment
   template:
     metadata:
       labels:
-        app: my-deployment
+        app: my-api-deployment
     spec:
       containers:
-      - name: my-pod
-        image: zxcvbnius/docker-demo:latest
+      - name: my-api-pod
+        image: lbgpaul/fastapi-simple
         ports:
-        - containerPort: 3000
+        - containerPort: 8000
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-service
+  name: api-service
 spec:
   type: NodePort
   ports:
-  - port: 3080
-    nodePort: 30390
-    targetPort: 3000
+  - port: 3090
+    nodePort: 30380
+    targetPort: 8000
   selector:
-    app: my-deployment
+    app: my-api-deployment
